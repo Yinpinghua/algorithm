@@ -292,3 +292,93 @@ void desc_quick_sort(int arr[], int begin, int end)
 继续比较，
 知道，左右索引都向一个点聚集位置，
 然后递归左边比较和右边比较
+
+堆排序
+//创建最大堆
+void max_heap_build(int a[], int start, int end)
+{
+	int dad = start;
+	int son = 2 * dad + 1;
+	while (son<=end){
+		if (son+1<=end&&a[son]< a[son+1]){
+			++son;
+		}
+
+		if (a[dad]>a[son]){
+			break;
+		}
+
+		int temp = a[son];
+		a[son] = a[dad];
+		a[dad] = temp;
+		dad = son;
+		son = 2 * dad + 1;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+ //最大堆排序
+void max_heap_sort(int a[], int data_size)
+{
+	int i, j;
+	//先求出root的索引，再求出叶子节点索引
+	for (i=data_size>>1;i>=0;i--){
+		max_heap_build(a,i,data_size - 1);
+	}
+
+	//然后将堆顶和最后一个元素进行交换，然后对堆顶进行调整
+	for (i = data_size -1;i >= 0;i--) {
+		int temp = a[0];
+		a[0] = a[i];
+		a[i] = temp;
+		max_heap_build(a, 0,i-1);
+	}
+}
+
+//小堆创建
+void min_heap_build(int a[], int start, int end)
+{
+	int dad = start;
+	int son = 2 * dad + 1;
+	while (son<=end){
+		//先比较叶子节点
+		if (son+1<=end&&a[son]>a[son+1]){
+			++son;
+		}
+
+		//然后再比较根节点
+		if (a[dad]<a[son]){
+			break;
+		}
+
+		int temp = a[son];
+		a[son] = a[dad];
+		a[dad] = temp;
+		dad = son;
+		son = 2 * dad + 1;
+	}
+}
+
+//小堆排序
+void min_heap_sort(int a[], int end)
+{
+	int i, j;
+	for (i=end>=1;i>=0;i--){
+		min_heap_build(a, i, end - 1);
+	}
+
+	for (i=end-1;i>=0;i--){
+		int temp = a[0];
+		a[0] = a[i];
+		a[i] = temp;
+		min_heap_build(a, 0, i - 1);
+	}
+}
