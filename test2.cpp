@@ -463,3 +463,85 @@ void min_heap_sort(int a[], int end)
 		min_heap_build(a, 0, i - 1);
 	}
 }
+
+int* data_ptr = (int*)malloc(data_size * sizeof(int));
+void asc_merge(int arr[], int low, int mid, int high)
+{
+	int i, j, k;
+	//先拷贝数组元素
+	for (i = low;i <= high;i++) {
+		data_ptr[i] = arr[i];
+	}
+
+	//两两比较，进行合并
+	i = low;
+	j = mid + 1;
+	//k是控制数组的下标
+	for (k = low;i <= mid && j <= high;k++) {
+		(data_ptr[i] <= data_ptr[j]) ? arr[k] =
+			data_ptr[i++] : arr[k] = data_ptr[j++];
+	}
+
+	//扫尾工作
+	while (i <= mid) {
+		arr[k++] = data_ptr[i++];
+	}
+
+	while (j <= high) {
+		arr[k++] = data_ptr[j++];
+	}
+
+}
+
+void asc_merge_sort(int arr[],int low,int high)
+{
+	if (low==high){
+		return;
+	}
+
+	//二路分组
+	int mid = (low + high) / 2;
+	asc_merge_sort(arr, low, mid);//向左半区进行划分
+	asc_merge_sort(arr, mid + 1, high);//向右半区进行划分
+	asc_merge(arr, low,mid,high);//合并所有分路
+}
+
+void desc_mege(int arr[], int low, int mid, int high)
+{
+	int i, j, k;
+	//先拷贝数组元素
+	for (i = low;i <= high;i++) {
+		data_ptr[i] = arr[i];
+	}
+
+	//两两比较，进行合并
+	i = low;
+	j = mid + 1;
+	//k是控制数组的下标
+	for (k = low;i <= mid && j <= high;k++) {
+		(data_ptr[i] >= data_ptr[j]) ? arr[k] =
+			data_ptr[i++] : arr[k] = data_ptr[j++];
+	}
+
+	//扫尾工作
+	while (i <= mid) {
+		arr[k++] = data_ptr[i++];
+	}
+
+	while (j <= high) {
+		arr[k++] = data_ptr[j++];
+	}
+
+}
+void desc_merge_sort(int arr[], int low, int high)
+{
+	//二路分划的化,要除以2，恒等
+	if (low == high) {
+		return;
+	}
+
+	int mid = (low + high) / 2;
+	desc_merge_sort(arr, low, mid);//向左划分
+	desc_merge_sort(arr, mid + 1, high);//向右划分
+	desc_mege(arr, low, mid, high);
+}
