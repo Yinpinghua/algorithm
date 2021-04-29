@@ -284,6 +284,87 @@ void desc_quick_sort(int arr[], int begin, int end)
 	desc_quick_sort(arr, i + 1, end);
 }
 
+//右边为基准点
+void asc_quick_sort1(int src[], int begin, int end)
+{
+	if (begin > end) {
+		return;
+	}
+
+	//右边为基准,左小右大
+	int base_value = src[end];
+	int low = begin;
+	int high = end;
+	while (low<high){
+		//先向左边搜索
+		while (low<high &&src[low]< base_value){
+			low++;
+		}
+		if (low<high){
+			src[high] = src[low];
+			high--;
+		}
+
+		//向右边搜索
+		while (low<high && src[high]>base_value){
+			high--;
+		}
+
+		if (low<high){
+			src[low] = src[high];
+		}
+	}
+
+	//基准值回归
+	src[high] = base_value;
+	//向左边找
+	asc_quick_sort1(src, begin, high - 1);
+	//向右边找
+	asc_quick_sort1(src, high + 1, end);
+
+}
+
+
+//右边为基准点
+void desc_quick_sort1(int src[], int begin, int end)
+{
+	if (begin > end) {
+		return;
+	}
+
+	//右边为基准,左大右小
+	int base_value = src[end];
+	int low = begin;
+	int high = end;
+	while (low < high) {
+		//先向左边搜索
+		while (low < high && src[low] > base_value) {
+			low++;
+		}
+		if (low < high) {
+			src[high] = src[low];
+			high--;
+		}
+
+		//向右边搜索
+		while (low<high && src[high]<base_value) {
+			high--;
+		}
+
+		if (low < high) {
+			src[low] = src[high];
+		}
+	}
+
+	//基准值回归
+	src[high] = base_value;
+	//向左边找
+	desc_quick_sort1(src, begin, high - 1);
+	//向右边找
+	desc_quick_sort1(src, high + 1, end);
+
+}
+
 综上以上所诉的，快速排序
 以个基准点进行两端划分，若划分成右边大，左边小的，则
 先进行右边比较，如何右边的值，大于基准值，右边的下标，就递减，否则把当前的值付给当前的小端点，
