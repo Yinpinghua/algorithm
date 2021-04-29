@@ -272,7 +272,8 @@ void desc_quick_sort(int arr[], int begin, int end)
 		}
 
 		if (i<j){
-			arr[j] = arr[i];
+			arr[j] = arr[i];  
+             j--;
 		}
 	}
 
@@ -372,7 +373,7 @@ void desc_quick_sort1(int src[], int begin, int end)
 接着进行左边比较，如果左边的值，大于基准值，就替换，小端索引值加加，否则，前进一个小端的索引，
 继续比较，
 知道，左右索引都向一个点聚集位置，
-然后递归左边比较和右边比较
+然后递归左边比较和右边比较(第一个元素和最后一个元素进行交换,然后与剩余元素进行比较)
 
 堆排序
 //创建最大堆
@@ -416,7 +417,7 @@ void max_heap_sort(int a[], int data_size)
 	}
 
 	//然后将堆顶和最后一个元素进行交换，然后对堆顶进行调整
-	for (i = data_size -1;i >= 0;i--) {
+	for (i = data_size -1;i > 0;i--) {
 		int temp = a[0];
 		a[0] = a[i];
 		a[i] = temp;
@@ -452,11 +453,11 @@ void min_heap_build(int a[], int start, int end)
 void min_heap_sort(int a[], int end)
 {
 	int i, j;
-	for (i=end>=1;i>=0;i--){
+	for (i=end>>1;i>=0;i--){
 		min_heap_build(a, i, end - 1);
 	}
 
-	for (i=end-1;i>=0;i--){
+	for (i=end-1;i>0;i--){
 		int temp = a[0];
 		a[0] = a[i];
 		a[i] = temp;
@@ -464,6 +465,29 @@ void min_heap_sort(int a[], int end)
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+归并排序
 int* data_ptr = (int*)malloc(data_size * sizeof(int));
 void asc_merge(int arr[], int low, int mid, int high)
 {
@@ -492,6 +516,17 @@ void asc_merge(int arr[], int low, int mid, int high)
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 void asc_merge_sort(int arr[],int low,int high)
 {
@@ -533,6 +568,7 @@ void desc_mege(int arr[], int low, int mid, int high)
 	}
 
 }
+
 void desc_merge_sort(int arr[], int low, int high)
 {
 	//二路分划的化,要除以2，恒等
@@ -544,4 +580,115 @@ void desc_merge_sort(int arr[], int low, int high)
 	desc_merge_sort(arr, low, mid);//向左划分
 	desc_merge_sort(arr, mid + 1, high);//向右划分
 	desc_mege(arr, low, mid, high);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+计数排序
+void asc_count_sort(int* arr, int len) {
+	if (arr == nullptr){
+		return;
+	}
+	int min = arr[0], max = arr[0];
+	for (int i=1;i<len;++i){
+		if (arr[i]>max){
+			max = arr[i];
+		}
+		if (arr[i]<min){
+			min = arr[i];
+		}
+	}
+	//求出距离之差
+	int size = max - min + 1;
+	int* count_ptr = (int*)malloc(sizeof(arr[0]) * size);
+	memset(count_ptr, 0, sizeof(arr[0]) * size);
+	for (int i =0;i<len;++i){
+		//统计自己出现的次数
+		count_ptr[arr[i] - min]++;
+	}
+	//再进行,再进行，当前项和前一项相加
+	for (int i =1;i<size;++i){
+		count_ptr[i] += count_ptr[i - 1];
+	}
+	int* psort = (int*)malloc(sizeof(arr[0]) * len);
+	memset(psort, 0, sizeof(arr[0]) * len);
+	//反向填充目标数组
+	for (int i=len-1;i>=0;i--){
+		count_ptr[arr[i] - min]--;
+		psort[count_ptr[arr[i] - min]] = arr[i];
+	}
+	for (int i = 0; i < len; i++) {
+		arr[i] = psort[i];
+	}
+	free(count_ptr);
+	free(psort);
+	count_ptr = NULL;
+	psort = NULL;
+}
+
+void desc_count_sort(int* arr, int len) {
+	if (arr == nullptr) {
+		return;
+	}
+	int min = arr[0], max = arr[0];
+	for (int i = 1;i < len;++i) {
+		if (arr[i] > max) {
+			max = arr[i];
+		}
+		if (arr[i] < min) {
+			min = arr[i];
+		}
+	}
+	//求出距离之差
+	int size = max - min + 1;
+	int* count_ptr = (int*)malloc(sizeof(arr[0]) * size);
+	memset(count_ptr, 0, sizeof(arr[0]) * size);
+	for (int i = 0;i < len;++i) {
+		//统计自己出现的次数
+		count_ptr[arr[i] - min]++;
+	}
+	//再进行,再进行，当前项和前一项相加
+	for (int i = 1;i < size;++i) {
+		count_ptr[i] += count_ptr[i - 1];
+	}
+	int* psort = (int*)malloc(sizeof(arr[0]) * len);
+	memset(psort, 0, sizeof(arr[0]) * len);
+	//反向填充目标数组
+	for (int i = len - 1;i >= 0;i--) {
+		count_ptr[arr[i] - min]--;
+		psort[count_ptr[arr[i] - min]] = arr[i];
+	}
+	for (int i = len - 1;i >= 0;i--) {
+		arr[len-i-1] = psort[i];
+	}
+	free(count_ptr);
+	free(psort);
+	count_ptr = NULL;
+	psort = NULL;
 }
