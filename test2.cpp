@@ -399,6 +399,67 @@ void max_heap_build(int a[], int start, int end)
 }
 
 
+void max_heap_build(int arr[], int start, int end)
+{
+	int parent_index = start;
+	int son_index = 2 * parent_index;
+	while (son_index <= end) {
+		if (son_index + 1 <= end && arr[son_index] < arr[son_index + 1]) {
+			++son_index;
+		}
+
+		if (arr[parent_index] >=arr[son_index]) {
+			break;
+		}
+
+		int temp = arr[son_index];
+		arr[son_index] = arr[parent_index];
+		arr[parent_index] = temp;
+		parent_index = son_index;
+		son_index = 2 * parent_index;
+	}
+}
+
+void min_heap_build(int a[], int start, int end)
+{
+	int dad = start;
+	int son = 2 * dad;
+	while (son <= end) {
+		//先比较叶子节点
+		if (son + 1 <= end && a[son] > a[son + 1]) {
+			++son;
+		}
+
+		//然后再比较根节点
+		if (a[dad] <=a[son]) {
+			break;
+		}
+
+		int temp = a[son];
+		a[son] = a[dad];
+		a[dad] = temp;
+		dad = son;
+		son = 2 * dad;
+	}
+}
+
+void heap_sort(int arr[], int data_size)
+{
+	for (int i = data_size >> 1;i > 0;--i) {
+		//min_heap_build(arr, i-1, data_size - 1);
+		max_heap_build(arr, i - 1, data_size - 1);
+	}
+
+	for (int i = data_size - 1;i >0;--i) {
+		int temp = arr[0];
+		arr[0] = arr[i];
+		arr[i] = temp;
+
+		max_heap_build(arr, 0,i-1);
+		//min_heap_build(arr, 0, i - 1);
+	}
+
+}
 
 
 
