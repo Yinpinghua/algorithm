@@ -30,6 +30,39 @@ void InsertSort(int a[], int n)
 	}
 }
 
+//快排
+int partition(int arr[], int low, int high)
+{
+	int base_value = arr[low];
+	while (low<high){
+		//右边查找
+		while (low<high &&arr[high]>=base_value){
+			high--;
+		}
+
+		arr[low] = arr[high];
+		//左边查找
+		while (low<high &&arr[low]<=base_value){
+			++low;
+		}
+
+		arr[high] = arr[low];
+	}
+
+	arr[low] = base_value;
+	return low;
+}
+
+void qsort2(int arr[], int low, int high)
+{
+	if (low>=high){
+		return;
+	}
+
+	int pivo = partition(arr, low, high);
+	qsort2(arr, low, pivo - 1);
+	qsort2(arr, pivo + 1, high);
+}
 
 //递减排序
 void desc_insert_sort(int arr[], int data_size)
