@@ -16,6 +16,21 @@ void asc_insert_sort(int arr[], int data_size)
 	}
 }
 
+//哨兵模式 插入排序
+void InsertSort(int a[], int n)
+{
+	int i, j;
+	for (i =2;i<n;++i){
+		a[0] = a[i];
+		for (j = i - 1;j > 0 && a[j] > a[0];j--) {
+			a[j+1] = a[j];
+		}
+
+		a[j + 1] = a[0];
+	}
+}
+
+
 //递减排序
 void desc_insert_sort(int arr[], int data_size)
 {
